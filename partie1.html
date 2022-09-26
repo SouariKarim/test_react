@@ -24,20 +24,29 @@
       class Form extends React.Component {
         constructor(props) {
           super(props);
+          this.handleClick = this.handleClick.bind(this);
         }
+        // select all the input content
+        handleClick(e) {
+          e.target.select();
+        }
+
         render() {
           return (
             <form onSubmit={this.props.handleSubmit}>
               <label>Nom: </label>
               <input
                 onChange={this.props.handleChange}
+                value={this.props.name}
                 type='text'
                 name='name'
               />{' '}
               <br />
               <label>Age: </label>
               <input
+                onClick={this.handleClick}
                 onChange={this.props.handleChange}
+                value={this.props.age}
                 type='number'
                 name='age'
               />{' '}
@@ -52,11 +61,34 @@
 
       class ShowList extends React.Component {
         // create a person with the person classs using the passed props
+
         constructor(props) {
           super(props);
         }
+
         render() {
-          return <p> the name is : {this.props.name} </p>;
+          return (
+            <div>
+              {this.props.persons.length === 0 ? (
+                <p>the list is empty</p>
+              ) : (
+                <ul>
+                  {' '}
+                  {this.props.persons.map((person) => {
+                    if (person.age === 0) {
+                      return <li> {person.name} </li>;
+                    } else {
+                      return (
+                        <li>
+                          {person.name}( {person.age} ){' '}
+                        </li>
+                      );
+                    }
+                  })}{' '}
+                </ul>
+              )}
+            </div>
+          );
         }
       }
 
@@ -66,7 +98,7 @@
           super(props);
           this.state = {
             persons: [],
-            personne: {
+            person: {
               name: '',
               age: 0,
             },
@@ -75,13 +107,29 @@
           this.handleSubmit = this.handleSubmit.bind(this);
         }
 
-        handleChange(evt) {
-          this.setState({ [evt.target.name]: evt.target.value });
+        handleChange(e) {
+          this.setState({
+            person: {
+              ...this.state.person,
+              [e.target.name]: e.target.value,
+            },
+          });
         }
 
-        handleSubmit(evt) {
-          console.log(this.state.name);
-          event.preventDefault();
+        handleSubmit(e) {
+          e.preventDefault();
+
+          if (this.state.person.name === '') {
+            alert('name is required');
+          } else {
+            this.setState({
+              persons: [...this.state.persons, this.state.person],
+              person: {
+                name: '',
+                age: 0,
+              },
+            });
+          }
         }
         render() {
           return (
@@ -89,11 +137,11 @@
               <Form
                 handleChange={this.handleChange}
                 handleSubmit={this.handleSubmit}
-                name={this.state.name}
-                age={this.state.age}
+                name={this.state.person.name}
+                age={this.state.person.age}
               />
 
-              <ShowList name={this.state.name} />
+              <ShowList persons={this.state.persons} />
             </div>
           );
         }
