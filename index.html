@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Test application React</title>
+  </head>
+
+  <body>
+    <h2>Application de test en React</h2>
+
+    <!-- We will put our React component inside this div. -->
+    <div id="main"></div>
+    <script type="text/babel">
+      // create 2 personne classes
+      // parite 1 : contient nom
+      // partie 2 : contient age , nom parent , liste des enfants (arr)
+      class Personne {
+        // TODO
+        // declare the constructor here
+        constructor(name) {
+          this.name = name;
+        }
+
+        // declare the methods here
+      }
+
+      // code the child component here
+      // component pour le formulaire
+      const Hello = () => {
+        const karim = new Personne('karim');
+        console.log(karim);
+        return <h1> {karim.name} this is the hello component </h1>;
+      };
+
+      // component pour la liste de personnes
+
+      // this is the entry point component
+      const GestionPersonnes = () => {
+        return (
+          <div>
+            <h1> this is the gestion de personnes component </h1>
+
+            <Hello />
+          </div>
+        );
+      };
+
+      // TODO Composants
+      // GestionPersonnes
+      // ...
+
+      const domContainer = document.querySelector('#main');
+      ReactDOM.render(React.createElement(GestionPersonnes), domContainer);
+    </script>
+
+    <!-- Load React. -->
+    <!-- Note: when deploying, replace "development.js" with "production.min.js". -->
+    <script
+      src="https://unpkg.com/react@16/umd/react.development.js"
+      crossorigin
+    ></script>
+    <script
+      src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"
+      crossorigin
+    ></script>
+
+    <!-- Load our React component. -->
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  </body>
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Test application React</title>
+  </head>
+
+  <body>
+    <h2>Application de test en React</h2>
+
+    <!-- We will put our React component inside this div. -->
+    <div id="main"></div>
+    <script type="text/babel">
+      // parite 1 : contient nom
+
+      class Personne {
+        constructor(name, age) {
+          this.name = name;
+          this.age = age;
+        }
+      }
+
+      // component pour le formulaire :  write a class component because we have the react 16 version , there is no way to use the hooks.
+      class Form extends React.Component {
+        constructor(props) {
+          super(props);
+        }
+        render() {
+          return (
+            <form onSubmit={this.props.handleSubmit}>
+              <label>Nom: </label>
+              <input
+                onChange={this.props.handleChange}
+                type='text'
+                name='name'
+              />{' '}
+              <br />
+              <label>Age: </label>
+              <input
+                onChange={this.props.handleChange}
+                type='number'
+                name='age'
+              />{' '}
+              <br />
+              <input type='submit' value='Valider' />
+            </form>
+          );
+        }
+      }
+
+      // component pour la liste de personnes
+
+      class ShowList extends React.Component {
+        // create a person with the person classs using the passed props
+        constructor(props) {
+          super(props);
+        }
+        render() {
+          return <p> the name is : {this.props.name} </p>;
+        }
+      }
+
+      // this is the entry point component
+      class GestionPersonnes extends React.Component {
+        constructor(props) {
+          super(props);
+          this.state = {
+            persons: [],
+            personne: {
+              name: '',
+              age: 0,
+            },
+          };
+          this.handleChange = this.handleChange.bind(this);
+          this.handleSubmit = this.handleSubmit.bind(this);
+        }
+
+        handleChange(evt) {
+          this.setState({ [evt.target.name]: evt.target.value });
+        }
+
+        handleSubmit(evt) {
+          console.log(this.state.name);
+          event.preventDefault();
+        }
+        render() {
+          return (
+            <div>
+              <Form
+                handleChange={this.handleChange}
+                handleSubmit={this.handleSubmit}
+                name={this.state.name}
+                age={this.state.age}
+              />
+
+              <ShowList name={this.state.name} />
+            </div>
+          );
+        }
+      }
+
+      // TODO Composants
+      // GestionPersonnes
+      // ...
+
+      const domContainer = document.querySelector('#main');
+      ReactDOM.render(React.createElement(GestionPersonnes), domContainer);
+    </script>
+
+    <!-- Load React. -->
+    <!-- Note: when deploying, replace "development.js" with "production.min.js". -->
+    <script
+      src="https://unpkg.com/react@16/umd/react.development.js"
+      crossorigin
+    ></script>
+    <script
+      src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"
+      crossorigin
+    ></script>
+
+    <!-- Load our React component. -->
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  </body>
+</html>
