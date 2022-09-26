@@ -11,8 +11,6 @@
     <!-- We will put our React component inside this div. -->
     <div id="main"></div>
     <script type="text/babel">
-      // parite 1 : contient nom
-
       class Personne {
         constructor(name, age) {
           this.name = name;
@@ -20,7 +18,6 @@
         }
       }
 
-      // component pour le formulaire :  write a class component because we have the react 16 version , there is no way to use the hooks.
       class Form extends React.Component {
         constructor(props) {
           super(props);
@@ -57,11 +54,7 @@
         }
       }
 
-      // component pour la liste de personnes
-
       class ShowList extends React.Component {
-        // create a person with the person classs using the passed props
-
         constructor(props) {
           super(props);
         }
@@ -69,18 +62,19 @@
         render() {
           return (
             <div>
+              <h2>Liste des personnes</h2>
               {this.props.persons.length === 0 ? (
-                <p>the list is empty</p>
+                <p>La liste est vide</p>
               ) : (
                 <ul>
                   {' '}
-                  {this.props.persons.map((person) => {
+                  {this.props.persons.map((person, index) => {
                     if (person.age === 0) {
-                      return <li> {person.name} </li>;
+                      return <li key={index}> {person.name} </li>;
                     } else {
                       return (
-                        <li>
-                          {person.name}( {person.age} ){' '}
+                        <li key={index}>
+                          {person.name}( {person.age} ans){' '}
                         </li>
                       );
                     }
@@ -92,7 +86,6 @@
         }
       }
 
-      // this is the entry point component
       class GestionPersonnes extends React.Component {
         constructor(props) {
           super(props);
@@ -119,11 +112,17 @@
         handleSubmit(e) {
           e.preventDefault();
 
+          // if the user did not provide a name
           if (this.state.person.name === '') {
             alert('name is required');
           } else {
+            // create a new person
+            const newPerson = new Personne(
+              this.state.person.name,
+              this.state.person.age
+            );
             this.setState({
-              persons: [...this.state.persons, this.state.person],
+              persons: [...this.state.persons, newPerson],
               person: {
                 name: '',
                 age: 0,
