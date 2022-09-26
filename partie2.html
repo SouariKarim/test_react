@@ -11,8 +11,6 @@
     <!-- We will put our React component inside this div. -->
     <div id="main"></div>
     <script type="text/babel">
-      // parite 1 : contient nom
-
       class Personne {
         constructor(name, age, parent, enfant) {
           this.name = name;
@@ -21,14 +19,11 @@
           this.enfant = [];
         }
       }
-
-      // component pour le formulaire :  write a class component because we have the react 16 version , there is no way to use the hooks.
       class Form extends React.Component {
         constructor(props) {
           super(props);
           this.handleClick = this.handleClick.bind(this);
         }
-        // select all the input content
         handleClick(e) {
           e.target.select();
         }
@@ -67,15 +62,10 @@
         }
       }
 
-      // component pour la liste de personnes
-
       class ShowList extends React.Component {
-        // create a person with the person classs using the passed props
-
         constructor(props) {
           super(props);
         }
-
         render() {
           return (
             <div>
@@ -119,7 +109,6 @@
           super(props);
           this.state = {
             persons: [],
-            // these are the input fields
             person: {
               name: '',
               age: 0,
@@ -129,7 +118,7 @@
           this.handleChange = this.handleChange.bind(this);
           this.handleSubmit = this.handleSubmit.bind(this);
         }
-        // handlechange for the input fields
+
         handleChange(e) {
           this.setState({
             person: {
@@ -141,19 +130,16 @@
 
         handleSubmit(e) {
           e.preventDefault();
-
           if (
             this.state.person.parent === '' &&
             this.state.person.name !== ''
           ) {
-            // create a person obejct based on the inpur  fields.
             const newPerson = new Personne(
               '',
               this.state.person.age,
               this.state.person.name,
               []
             );
-
             this.setState({
               persons: [...this.state.persons, newPerson],
               person: {
