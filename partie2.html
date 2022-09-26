@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Test application React</title>
+  </head>
+
+  <body>
+    <h2>Application de test en React</h2>
+
+    <!-- We will put our React component inside this div. -->
+    <div id="main"></div>
+    <script type="text/babel">
+      // parite 1 : contient nom
+
+      class Personne {
+        constructor(name, age, parent, enfant) {
+          this.name = name;
+          this.age = age;
+          this.parent = parent;
+          this.enfant = [];
+        }
+      }
+
+      // component pour le formulaire :  write a class component because we have the react 16 version , there is no way to use the hooks.
+      class Form extends React.Component {
+        constructor(props) {
+          super(props);
+          this.handleClick = this.handleClick.bind(this);
+        }
+        // select all the input content
+        handleClick(e) {
+          e.target.select();
+        }
+
+        render() {
+          return (
+            <form onSubmit={this.props.handleSubmit}>
+              <label>Nom: </label>
+              <input
+                onChange={this.props.handleChange}
+                value={this.props.name}
+                type='text'
+                name='name'
+              />{' '}
+              <br />
+              <label>Age: </label>
+              <input
+                onClick={this.handleClick}
+                onChange={this.props.handleChange}
+                value={this.props.age}
+                type='number'
+                name='age'
+              />{' '}
+              <br />
+              <label>Parent: </label>
+              <input
+                onChange={this.props.handleChange}
+                value={this.props.parent}
+                type='text'
+                name='parent'
+              />{' '}
+              <br />
+              <input type='submit' value='Valider' />
+            </form>
+          );
+        }
+      }
+
+      // component pour la liste de personnes
+
+      class ShowList extends React.Component {
+        // create a person with the person classs using the passed props
+
+        constructor(props) {
+          super(props);
+        }
+
+        render() {
+          return (
+            <div>
+              {this.props.persons.length === 0 ? (
+                <p>the list is empty</p>
+              ) : (
+                <ul>
+                  {' '}
+                  {this.props.persons.map((person) => {
+                    if (person.age === 0) {
+                      return (
+                        <li>
+                          {' '}
+                          {person.parent}
+                          Enfant :
+                          {person.enfant.length === 0 ? (
+                            <p> la list est vide </p>
+                          ) : (
+                            <p>la liste nest pas vide</p>
+                          )}
+                        </li>
+                      );
+                    } else {
+                      return (
+                        <li>
+                          {person.name}( {person.age} ){' '}
+                        </li>
+                      );
+                    }
+                  })}{' '}
+                </ul>
+              )}
+            </div>
+          );
+        }
+      }
+
+      // this is the entry point component
+      class GestionPersonnes extends React.Component {
+        constructor(props) {
+          super(props);
+          this.state = {
+            persons: [],
+            // these are the input fields
+            person: {
+              name: '',
+              age: 0,
+              parent: '',
+            },
+          };
+          this.handleChange = this.handleChange.bind(this);
+          this.handleSubmit = this.handleSubmit.bind(this);
+        }
+        // handlechange for the input fields
+        handleChange(e) {
+          this.setState({
+            person: {
+              ...this.state.person,
+              [e.target.name]: e.target.value,
+            },
+          });
+        }
+
+        handleSubmit(e) {
+          e.preventDefault();
+
+          if (
+            this.state.person.parent === '' &&
+            this.state.person.name !== ''
+          ) {
+            // create a person obejct based on the inpur  fields.
+            const newPerson = new Personne(
+              '',
+              this.state.person.age,
+              this.state.person.name,
+              []
+            );
+
+            this.setState({
+              persons: [...this.state.persons, newPerson],
+              person: {
+                name: '',
+                age: 0,
+                parent: '',
+                enfant: [],
+              },
+            });
+          } else if (this.state.person.name && this.state.person.parent) {
+            const index = this.state.persons.findIndex(
+              (person) => person.parent === this.state.person.parent
+            );
+            if (index !== -1) {
+              const enfantIndex = this.state.persons[index].enfant.findIndex(
+                (person) => person.name === this.state.person.name
+              );
+              if (
+                this.state.persons[index].enfant.length > 0 &&
+                enfantIndex !== -1
+              ) {
+                alert('the child already exists');
+              } else {
+                const person = new Personne(
+                  this.state.person.name,
+                  this.state.person.age,
+                  this.state.person.parent,
+                  []
+                );
+                this.state.persons[index].enfant.push(person);
+
+                this.setState({
+                  person: {
+                    name: '',
+                    age: 0,
+                    parent: '',
+                    enfant: [],
+                  },
+                });
+              }
+            } else {
+              alert("le parent n'existe pas");
+            }
+          }
+        }
+        render() {
+          return (
+            <div>
+              <Form
+                handleChange={this.handleChange}
+                handleSubmit={this.handleSubmit}
+                name={this.state.person.name}
+                age={this.state.person.age}
+                parent={this.state.person.parent}
+                persons={this.state.persons}
+              />
+
+              <ShowList persons={this.state.persons} />
+            </div>
+          );
+        }
+      }
+
+      // TODO Composants
+      // GestionPersonnes
+      // ...
+
+      const domContainer = document.querySelector('#main');
+      ReactDOM.render(React.createElement(GestionPersonnes), domContainer);
+    </script>
+
+    <!-- Load React. -->
+    <!-- Note: when deploying, replace "development.js" with "production.min.js". -->
+    <script
+      src="https://unpkg.com/react@16/umd/react.development.js"
+      crossorigin
+    ></script>
+    <script
+      src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"
+      crossorigin
+    ></script>
+
+    <!-- Load our React component. -->
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  </body>
+</html>
