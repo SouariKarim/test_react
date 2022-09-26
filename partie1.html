@@ -33,6 +33,7 @@
             <form onSubmit={this.props.handleSubmit}>
               <label>Nom: </label>
               <input
+                style={{ width: '80%', marginBottom: '20px' }}
                 onChange={this.props.handleChange}
                 value={this.props.name}
                 type='text'
@@ -41,6 +42,7 @@
               <br />
               <label>Age: </label>
               <input
+                style={{ width: '80%', marginBottom: '20px' }}
                 onClick={this.handleClick}
                 onChange={this.props.handleChange}
                 value={this.props.age}
@@ -114,7 +116,7 @@
 
           // if the user did not provide a name
           if (this.state.person.name === '') {
-            alert('name is required');
+            alert('Le nom doit être renseigné');
           } else {
             // create a new person
             const newPerson = new Personne(

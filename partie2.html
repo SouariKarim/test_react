@@ -33,6 +33,7 @@
             <form onSubmit={this.props.handleSubmit}>
               <label>Nom: </label>
               <input
+                style={{ width: '80%', marginBottom: '20px' }}
                 onChange={this.props.handleChange}
                 value={this.props.name}
                 type='text'
@@ -41,6 +42,7 @@
               <br />
               <label>Age: </label>
               <input
+                style={{ width: '80%', marginBottom: '20px' }}
                 onClick={this.handleClick}
                 onChange={this.props.handleChange}
                 value={this.props.age}
@@ -50,6 +52,7 @@
               <br />
               <label>Parent: </label>
               <input
+                style={{ width: '80%', marginBottom: '20px' }}
                 onChange={this.props.handleChange}
                 value={this.props.parent}
                 type='text'
@@ -69,33 +72,53 @@
         render() {
           return (
             <div>
+              <h2>Liste de personnes</h2>
               {this.props.persons.length === 0 ? (
-                <p>the list is empty</p>
+                <p> La liste est vide </p>
               ) : (
                 <ul>
-                  {' '}
-                  {this.props.persons.map((person) => {
+                  {this.props.persons.map((person, index) => {
                     if (person.age === 0) {
                       return (
-                        <li>
-                          {' '}
+                        <li key={index}>
                           {person.parent}
-                          Enfant :
+                          <br></br>
+                          <h3>Enfant : </h3>
                           {person.enfant.length === 0 ? (
-                            <p> la list est vide </p>
+                            <p>La liste est vide</p>
                           ) : (
-                            <p>la liste nest pas vide</p>
+                            person.enfant.map((item, index) => {
+                              return (
+                                <div key={index}>
+                                  {item.name}{' '}
+                                  {item.age !== 0 ? `(${item.age} ans)` : ''}
+                                </div>
+                              );
+                            })
                           )}
                         </li>
                       );
                     } else {
                       return (
-                        <li>
-                          {person.name}( {person.age} ){' '}
+                        <li key={index}>
+                          {' '}
+                          >{person.parent} ({person.age} ans) <br></br>
+                          <h3>Enfant : </h3>
+                          {person.enfant.length === 0 ? (
+                            <p>La liste est vide</p>
+                          ) : (
+                            person.enfant.map((item, index) => {
+                              <div key={index}>
+                                {' '}
+                                >{item.name}{' '}
+                                {item.age !== 0 ? `(${item.age} ans)` : ''}
+                              </div>;
+                            })
+                          )}
                         </li>
                       );
                     }
-                  })}{' '}
+                  })}
                 </ul>
               )}
             </div>
@@ -134,21 +157,31 @@
             this.state.person.parent === '' &&
             this.state.person.name !== ''
           ) {
-            const newPerson = new Personne(
-              '',
-              this.state.person.age,
-              this.state.person.name,
-              []
+            const index = this.state.persons.findIndex(
+              (person) => person.parent === this.state.person.name
             );
-            this.setState({
-              persons: [...this.state.persons, newPerson],
-              person: {
-                name: '',
-                age: 0,
-                parent: '',
-                enfant: [],
-              },
-            });
+
+            console.log('the index is ', index);
+
+            if (index !== -1) {
+              alert('La personne existe deja');
+            } else {
+              const newPerson = new Personne(
+                '',
+                this.state.person.age,
+                this.state.person.name,
+                []
+              );
+              this.setState({
+                persons: [...this.state.persons, newPerson],
+                person: {
+                  name: '',
+                  age: 0,
+                  parent: '',
+                  enfant: [],
+                },
+              });
+            }
           } else if (this.state.person.name && this.state.person.parent) {
             const index = this.state.persons.findIndex(
               (person) => person.parent === this.state.person.parent
