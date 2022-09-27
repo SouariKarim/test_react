@@ -71,15 +71,12 @@
                 <ul>
                   {' '}
                   {this.props.persons.map((person, index) => {
-                    if (person.age === 0) {
-                      return <li key={index}> {person.name} </li>;
-                    } else {
-                      return (
-                        <li key={index}>
-                          {person.name}( {person.age} ans){' '}
-                        </li>
-                      );
-                    }
+                    return (
+                      <li key={index}>
+                        {person.name}
+                        {person.age !== 0 ? ` (${person.age} ans)` : ''}
+                      </li>
+                    );
                   })}{' '}
                 </ul>
               )}

@@ -83,6 +83,7 @@
                         {person.enfant.length === 0 ? (
                           <p>La liste est vide</p>
                         ) : (
+                          // display the children
                           person.enfant.map((item, index) => {
                             return (
                               <li
@@ -98,6 +99,7 @@
                                 {item.enfant.length === 0 ? (
                                   <p>la liste est vide </p>
                                 ) : (
+                                  // if the child has descendant display their names
                                   item.enfant.map((child, index) => {
                                     return <li key={index}> {child.name} </li>;
                                   })
@@ -155,6 +157,14 @@
 
             if (index !== -1) {
               alert('La personne existe deja');
+              this.setState({
+                person: {
+                  name: '',
+                  age: 0,
+                  parent: '',
+                  enfant: [],
+                },
+              });
             } else {
               const newPerson = new Personne(
                 '',
@@ -185,6 +195,14 @@
                 enfantIndex !== -1
               ) {
                 alert('the child already exists');
+                this.setState({
+                  person: {
+                    name: '',
+                    age: 0,
+                    parent: '',
+                    enfant: [],
+                  },
+                });
               } else {
                 const person = new Personne(
                   this.state.person.name,
@@ -205,6 +223,14 @@
               }
             } else {
               alert("le parent n'existe pas");
+              this.setState({
+                person: {
+                  name: '',
+                  age: 0,
+                  parent: '',
+                  enfant: [],
+                },
+              });
             }
           }
         }
