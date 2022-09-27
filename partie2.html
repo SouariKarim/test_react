@@ -74,46 +74,40 @@
               ) : (
                 <ul>
                   {this.props.persons.map((person, index) => {
-                    if (person.age === 0) {
-                      return (
-                        <li key={index}>
-                          {person.parent}
-                          <br></br>
-                          <h3>Enfant : </h3>
-                          {person.enfant.length === 0 ? (
-                            <p>La liste est vide</p>
-                          ) : (
-                            person.enfant.map((item, index) => {
-                              return (
-                                <div key={index}>
-                                  {item.name}{' '}
-                                  {item.age !== 0 ? `(${item.age} ans)` : ''}
-                                </div>
-                              );
-                            })
-                          )}
-                        </li>
-                      );
-                    } else {
-                      return (
-                        <li key={index}>
-                          {' '}
-                          {person.parent} ({person.age} ans) <br></br>
-                          <h3>Enfant : </h3>
-                          {person.enfant.length === 0 ? (
-                            <p>La liste est vide</p>
-                          ) : (
-                            person.enfant.map((item, index) => {
-                              <div key={index}>
-                                {' '}
-                                >{item.name}{' '}
+                    return (
+                      <li key={index}>
+                        {person.parent}{' '}
+                        {person.age !== 0 ? `(${person.age} ans)` : ''}
+                        <br></br>
+                        <h2>Enfant : </h2>
+                        {person.enfant.length === 0 ? (
+                          <p>La liste est vide</p>
+                        ) : (
+                          person.enfant.map((item, index) => {
+                            return (
+                              <li
+                                style={{
+                                  listStyleType: 'circle',
+                                  marginLeft: '40px',
+                                }}
+                                key={index}
+                              >
+                                {item.name}{' '}
                                 {item.age !== 0 ? `(${item.age} ans)` : ''}
-                              </div>;
-                            })
-                          )}
-                        </li>
-                      );
-                    }
+                                <h5> Enfant : </h5>
+                                {item.enfant.length === 0 ? (
+                                  <p>la liste est vide </p>
+                                ) : (
+                                  item.enfant.map((child, index) => {
+                                    return <li key={index}> {child.name} </li>;
+                                  })
+                                )}
+                              </li>
+                            );
+                          })
+                        )}
+                      </li>
+                    );
                   })}
                 </ul>
               )}
